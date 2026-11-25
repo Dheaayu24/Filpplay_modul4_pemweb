@@ -1,0 +1,283 @@
+{
+	"info": {
+		"name": "FlipPlay REST API - Modul 4",
+		"description": "Koleksi endpoint Postman untuk menguji REST API FlipPlay (Happy Path & Failure Path).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://127.0.0.1:8000/api",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "1. Media CRUD",
+			"item": [
+				{
+					"name": "[Happy] GET All Media",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/media",
+							"host": ["{{baseUrl}}"],
+							"path": ["media"]
+						}
+					}
+				},
+				{
+					"name": "[Happy] GET Search Media by Title",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/media?title=Frieren",
+							"host": ["{{baseUrl}}"],
+							"path": ["media"],
+							"query": [
+								{ "key": "title", "value": "Frieren" }
+							]
+						}
+					}
+				},
+				{
+					"name": "[Happy] GET Media Detail + Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/media/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["media", "1"]
+						}
+					}
+				},
+				{
+					"name": "[Failure] GET Media Not Found (404)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/media/999",
+							"host": ["{{baseUrl}}"],
+							"path": ["media", "999"]
+						}
+					}
+				},
+				{
+					"name": "[Happy] POST Create Media (201)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Solo Leveling\",\n    \"type\": \"anime\",\n    \"genre\": \"Action\",\n    \"year\": 2024,\n    \"episodes\": 12\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/media",
+							"host": ["{{baseUrl}}"],
+							"path": ["media"]
+						}
+					}
+				},
+				{
+					"name": "[Failure] POST Create Media Empty Title (422)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"\",\n    \"type\": \"anime\",\n    \"genre\": \"Action\",\n    \"year\": 2024,\n    \"episodes\": 12\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/media",
+							"host": ["{{baseUrl}}"],
+							"path": ["media"]
+						}
+					}
+				},
+				{
+					"name": "[Failure] POST Create Media Duplicate Title (422)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Frieren: Beyond Journey End\",\n    \"type\": \"anime\",\n    \"genre\": \"Fantasy\",\n    \"year\": 2023,\n    \"episodes\": 28\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/media",
+							"host": ["{{baseUrl}}"],
+							"path": ["media"]
+						}
+					}
+				},
+				{
+					"name": "[Happy] PATCH Update Media (200)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"episodes\": 29\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/media/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["media", "1"]
+						}
+					}
+				},
+				{
+					"name": "[Happy] DELETE Media (200)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/media/6",
+							"host": ["{{baseUrl}}"],
+							"path": ["media", "6"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Users & Collection (belongsToMany)",
+			"item": [
+				{
+					"name": "[Happy] GET All Users + Collections",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["users"]
+						}
+					}
+				},
+				{
+					"name": "[Happy] GET User Detail + Collection",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "1"]
+						}
+					}
+				},
+				{
+					"name": "[Happy] GET User Collection",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/1/collection",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "1", "collection"]
+						}
+					}
+				},
+				{
+					"name": "[Happy] POST Add Media to User Collection (201)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"media_id\": 4\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/1/collection",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "1", "collection"]
+						}
+					}
+				},
+				{
+					"name": "[Failure] POST Add Duplicate Media to Collection (409)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"media_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/1/collection",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "1", "collection"]
+						}
+					}
+				},
+				{
+					"name": "[Happy] DELETE Remove Media from User Collection (200)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/1/collection/4",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "1", "collection", "4"]
+						}
+					}
+				},
+				{
+					"name": "[Failure] DELETE Media Not in Collection (404)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/1/collection/5",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "1", "collection", "5"]
+						}
+					}
+				}
+			]
+		}
+	]
+}
